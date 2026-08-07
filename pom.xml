@@ -20,7 +20,7 @@
 
     <groupId>org.wso2.integration.connector</groupId>
     <artifactId>mi-connector-ai</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-SNAPSHOT</version>
 
     <name>Low Code AI app builder module</name>
     <url>https://wso2.org</url>
