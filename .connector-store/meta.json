@@ -12,11 +12,81 @@
     "type": "Connector",
     "releases": [
         {
-            "tagName": "v0.2.2",
+            "tagName": "v1.0.0",
             "products": [
                 "MI 4.6.0"
             ],
             "operations": [
+                {
+                    "name": "getFromKnowledge",
+                    "description": "Search the vector store",
+                    "params": [
+                        {
+                            "name": "vectorStoreConfigKey",
+                            "type": "connection",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Select the vector store connection to retrieve data from."
+                        },
+                        {
+                            "name": "embeddingConfigKey",
+                            "type": "connection",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Choose the AI service connection for embedding generation."
+                        },
+                        {
+                            "name": "input",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Provide the input text or query to search in the vector store."
+                        },
+                        {
+                            "name": "needEmbedding",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "True",
+                            "description": "Check this box if the input needs to be embedded."
+                        },
+                        {
+                            "name": "embeddingModel",
+                            "type": "combo",
+                            "required": true,
+                            "defaultValue": "text-embedding-3-small",
+                            "description": "Select the embedding model to use for processing the input. Supported values: text-embedding-3-small, text-embedding-3-small, text-embedding-ada-002"
+                        },
+                        {
+                            "name": "maxResults",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "5",
+                            "description": "Specify the maximum number of results to return."
+                        },
+                        {
+                            "name": "minScore",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "0.75",
+                            "description": "Set the minimum score threshold for valid results."
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
+                },
                 {
                     "name": "agent",
                     "description": "AI Agent",
@@ -284,6 +354,118 @@
                     "isHidden": false
                 },
                 {
+                    "name": "addToKnowledge",
+                    "description": "Ingest documents to the vector store",
+                    "params": [
+                        {
+                            "name": "vectorStoreConfigKey",
+                            "type": "connection",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Select the vector store connection to store and retrieve embeddings."
+                        },
+                        {
+                            "name": "embeddingConfigKey",
+                            "type": "connection",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Choose the AI service connection for generating embeddings."
+                        },
+                        {
+                            "name": "input",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Provide the input data to be processed."
+                        },
+                        {
+                            "name": "needParse",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "True",
+                            "description": "Enable this option if the input needs to be parsed into text."
+                        },
+                        {
+                            "name": "parseType",
+                            "type": "combo",
+                            "required": true,
+                            "defaultValue": "pdf-to-text",
+                            "description": "Select the format of the input content to parse it correctly. Supported values: pdf-to-text, markdown-to-text, html-to-text, doc-to-text, docx-to-text, xls-to-text, xlsx-to-text, ppt-to-text, pptx-to-text"
+                        },
+                        {
+                            "name": "needSplit",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "True",
+                            "description": "Enable this option if the input needs to be split into smaller segments."
+                        },
+                        {
+                            "name": "splitStrategy",
+                            "type": "combo",
+                            "required": true,
+                            "defaultValue": "Recursive",
+                            "description": "Choose the strategy for splitting the input into segments. Supported values: Recursive, ByParagraph, BySentence"
+                        },
+                        {
+                            "name": "maxSegmentSize",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "1000",
+                            "description": "Specify the maximum size (in tokens) for each segment."
+                        },
+                        {
+                            "name": "maxOverlapSize",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "200",
+                            "description": "Specify the maximum overlap size (in tokens) between segments."
+                        },
+                        {
+                            "name": "needEmbedding",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "True",
+                            "description": "Enable this option to generate embeddings for the input."
+                        },
+                        {
+                            "name": "embeddingModel",
+                            "type": "combo",
+                            "required": true,
+                            "defaultValue": "text-embedding-3-small",
+                            "description": "Select the embedding model to generate vector representations. Supported values: text-embedding-3-small, text-embedding-3-small, text-embedding-ada-002"
+                        },
+                        {
+                            "name": "responseVariable",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Name of the variable to which the output of the operation should be assigned"
+                        },
+                        {
+                            "name": "overwriteBody",
+                            "type": "checkbox",
+                            "required": false,
+                            "defaultValue": "false",
+                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
+                        }
+                    ],
+                    "isHidden": false
+                },
+                {
+                    "name": "mcpTools",
+                    "description": "Add MCP Tools",
+                    "params": [
+                        {
+                            "name": "mcpToolsSelection",
+                            "type": "mcpToolsSelection",
+                            "required": false,
+                            "defaultValue": "[]",
+                            "description": "Select tools from the connected MCP server"
+                        }
+                    ],
+                    "isHidden": false
+                },
+                {
                     "name": "ragChat",
                     "description": "RAG Chat Completion",
                     "params": [
@@ -429,546 +611,9 @@
                         }
                     ],
                     "isHidden": false
-                },
-                {
-                    "name": "addToKnowledge",
-                    "description": "Ingest documents to the vector store",
-                    "params": [
-                        {
-                            "name": "vectorStoreConfigKey",
-                            "type": "connection",
-                            "required": true,
-                            "defaultValue": "",
-                            "description": "Select the vector store connection to store and retrieve embeddings."
-                        },
-                        {
-                            "name": "embeddingConfigKey",
-                            "type": "connection",
-                            "required": true,
-                            "defaultValue": "",
-                            "description": "Choose the AI service connection for generating embeddings."
-                        },
-                        {
-                            "name": "input",
-                            "type": "stringOrExpression",
-                            "required": true,
-                            "defaultValue": "",
-                            "description": "Provide the input data to be processed."
-                        },
-                        {
-                            "name": "needParse",
-                            "type": "checkbox",
-                            "required": false,
-                            "defaultValue": "True",
-                            "description": "Enable this option if the input needs to be parsed into text."
-                        },
-                        {
-                            "name": "parseType",
-                            "type": "combo",
-                            "required": true,
-                            "defaultValue": "pdf-to-text",
-                            "description": "Select the format of the input content to parse it correctly. Supported values: pdf-to-text, markdown-to-text, html-to-text, doc-to-text, docx-to-text, xls-to-text, xlsx-to-text, ppt-to-text, pptx-to-text"
-                        },
-                        {
-                            "name": "needSplit",
-                            "type": "checkbox",
-                            "required": false,
-                            "defaultValue": "True",
-                            "description": "Enable this option if the input needs to be split into smaller segments."
-                        },
-                        {
-                            "name": "splitStrategy",
-                            "type": "combo",
-                            "required": true,
-                            "defaultValue": "Recursive",
-                            "description": "Choose the strategy for splitting the input into segments. Supported values: Recursive, ByParagraph, BySentence"
-                        },
-                        {
-                            "name": "maxSegmentSize",
-                            "type": "stringOrExpression",
-                            "required": false,
-                            "defaultValue": "1000",
-                            "description": "Specify the maximum size (in tokens) for each segment."
-                        },
-                        {
-                            "name": "maxOverlapSize",
-                            "type": "stringOrExpression",
-                            "required": false,
-                            "defaultValue": "200",
-                            "description": "Specify the maximum overlap size (in tokens) between segments."
-                        },
-                        {
-                            "name": "needEmbedding",
-                            "type": "checkbox",
-                            "required": false,
-                            "defaultValue": "True",
-                            "description": "Enable this option to generate embeddings for the input."
-                        },
-                        {
-                            "name": "embeddingModel",
-                            "type": "combo",
-                            "required": true,
-                            "defaultValue": "text-embedding-3-small",
-                            "description": "Select the embedding model to generate vector representations. Supported values: text-embedding-3-small, text-embedding-3-small, text-embedding-ada-002"
-                        },
-                        {
-                            "name": "responseVariable",
-                            "type": "string",
-                            "required": true,
-                            "defaultValue": "",
-                            "description": "Name of the variable to which the output of the operation should be assigned"
-                        },
-                        {
-                            "name": "overwriteBody",
-                            "type": "checkbox",
-                            "required": false,
-                            "defaultValue": "false",
-                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
-                        }
-                    ],
-                    "isHidden": false
-                },
-                {
-                    "name": "getFromKnowledge",
-                    "description": "Search the vector store",
-                    "params": [
-                        {
-                            "name": "vectorStoreConfigKey",
-                            "type": "connection",
-                            "required": true,
-                            "defaultValue": "",
-                            "description": "Select the vector store connection to retrieve data from."
-                        },
-                        {
-                            "name": "embeddingConfigKey",
-                            "type": "connection",
-                            "required": true,
-                            "defaultValue": "",
-                            "description": "Choose the AI service connection for embedding generation."
-                        },
-                        {
-                            "name": "input",
-                            "type": "stringOrExpression",
-                            "required": true,
-                            "defaultValue": "",
-                            "description": "Provide the input text or query to search in the vector store."
-                        },
-                        {
-                            "name": "needEmbedding",
-                            "type": "checkbox",
-                            "required": false,
-                            "defaultValue": "True",
-                            "description": "Check this box if the input needs to be embedded."
-                        },
-                        {
-                            "name": "embeddingModel",
-                            "type": "combo",
-                            "required": true,
-                            "defaultValue": "text-embedding-3-small",
-                            "description": "Select the embedding model to use for processing the input. Supported values: text-embedding-3-small, text-embedding-3-small, text-embedding-ada-002"
-                        },
-                        {
-                            "name": "maxResults",
-                            "type": "stringOrExpression",
-                            "required": false,
-                            "defaultValue": "5",
-                            "description": "Specify the maximum number of results to return."
-                        },
-                        {
-                            "name": "minScore",
-                            "type": "stringOrExpression",
-                            "required": false,
-                            "defaultValue": "0.75",
-                            "description": "Set the minimum score threshold for valid results."
-                        },
-                        {
-                            "name": "responseVariable",
-                            "type": "string",
-                            "required": true,
-                            "defaultValue": "",
-                            "description": "Name of the variable to which the output of the operation should be assigned"
-                        },
-                        {
-                            "name": "overwriteBody",
-                            "type": "checkbox",
-                            "required": false,
-                            "defaultValue": "false",
-                            "description": "Replace the Message Body in Message Context with the output of the operation (This will remove the payload from the above variable)."
-                        }
-                    ],
-                    "isHidden": false
-                },
-                {
-                    "name": "mcpTools",
-                    "description": "Add MCP Tools",
-                    "params": [
-                        {
-                            "name": "mcpToolsSelection",
-                            "type": "mcpToolsSelection",
-                            "required": false,
-                            "defaultValue": "[]",
-                            "description": "Select tools from the connected MCP server"
-                        }
-                    ],
-                    "isHidden": false
                 }
             ],
             "connections": [
-                {
-                    "name": "POSTGRES_VECTOR",
-                    "description": "PGVector Connection Config",
-                    "params": [
-                        {
-                            "name": "connectionName",
-                            "type": "string",
-                            "required": true,
-                            "defaultValue": "POSTGRES_VECTOR",
-                            "description": "A name for the vector store connection"
-                        },
-                        {
-                            "name": "host",
-                            "type": "stringOrExpression",
-                            "required": true,
-                            "defaultValue": "localhost",
-                            "description": "The host name of the database server"
-                        },
-                        {
-                            "name": "port",
-                            "type": "stringOrExpression",
-                            "required": true,
-                            "defaultValue": "5432",
-                            "description": "The port number of the database server"
-                        },
-                        {
-                            "name": "database",
-                            "type": "stringOrExpression",
-                            "required": true,
-                            "defaultValue": "postgres",
-                            "description": "The name of the database"
-                        },
-                        {
-                            "name": "user",
-                            "type": "stringOrExpression",
-                            "required": true,
-                            "defaultValue": "",
-                            "description": "The user name to connect to the database"
-                        },
-                        {
-                            "name": "password",
-                            "type": "stringOrExpression",
-                            "required": false,
-                            "defaultValue": "",
-                            "description": "The password to connect to the database"
-                        },
-                        {
-                            "name": "table",
-                            "type": "stringOrExpression",
-                            "required": true,
-                            "defaultValue": "mi",
-                            "description": "The table name"
-                        },
-                        {
-                            "name": "dimension",
-                            "type": "stringOrExpression",
-                            "required": true,
-                            "defaultValue": "1536",
-                            "description": "Give the dimension of the embeddings"
-                        }
-                    ]
-                },
-                {
-                    "name": "MISTRAL_AI",
-                    "description": "MistralAI Connection Config",
-                    "params": [
-                        {
-                            "name": "connectionName",
-                            "type": "string",
-                            "required": true,
-                            "defaultValue": "MISTRAL_AI_CONNECTION_1",
-                            "description": "The name for the MistralAI connection"
-                        },
-                        {
-                            "name": "apiKey",
-                            "type": "stringOrExpression",
-                            "required": true,
-                            "defaultValue": "",
-                            "description": "MistralAI Key"
-                        }
-                    ]
-                },
-                {
-                    "name": "MCP",
-                    "description": "MCP Server Connection Config",
-                    "params": [
-                        {
-                            "name": "connectionName",
-                            "type": "string",
-                            "required": true,
-                            "defaultValue": "MCP_CONNECTION",
-                            "description": "A unique name for the MCP server connection"
-                        },
-                        {
-                            "name": "mcpServerUrl",
-                            "type": "stringOrExpression",
-                            "required": true,
-                            "defaultValue": "",
-                            "description": "The URL of the MCP server endpoint (e.g., https://api.example.com/mcp/)"
-                        },
-                        {
-                            "name": "authenticationType",
-                            "type": "combo",
-                            "required": true,
-                            "defaultValue": "None",
-                            "description": "Select the authentication method for the MCP server Supported values: None, Bearer Token"
-                        },
-                        {
-                            "name": "bearerToken",
-                            "type": "stringOrExpression",
-                            "required": false,
-                            "defaultValue": "",
-                            "description": "The bearer token for authentication (e.g., your API key or access token)"
-                        },
-                        {
-                            "name": "customHeaders",
-                            "type": "expressionTextArea",
-                            "required": false,
-                            "defaultValue": "",
-                            "description": "Additional HTTP headers in key:value format (one per line). Example:\nContent-Type:application/json\nX-Custom-Header:value"
-                        },
-                        {
-                            "name": "timeout",
-                            "type": "stringOrExpression",
-                            "required": false,
-                            "defaultValue": "30000",
-                            "description": "Connection timeout in milliseconds"
-                        },
-                        {
-                            "name": "maxConnections",
-                            "type": "stringOrExpression",
-                            "required": false,
-                            "defaultValue": "10",
-                            "description": "Maximum number of concurrent connections to the MCP server"
-                        },
-                        {
-                            "name": "connectionTimeout",
-                            "type": "stringOrExpression",
-                            "required": false,
-                            "defaultValue": "5000",
-                            "description": "Connection establishment timeout in milliseconds"
-                        },
-                        {
-                            "name": "socketTimeout",
-                            "type": "stringOrExpression",
-                            "required": false,
-                            "defaultValue": "30000",
-                            "description": "Socket read/write timeout in milliseconds"
-                        }
-                    ]
-                },
-                {
-                    "name": "CHROMA_DB",
-                    "description": "ChromaDB Connection Config",
-                    "params": [
-                        {
-                            "name": "connectionName",
-                            "type": "string",
-                            "required": true,
-                            "defaultValue": "CHROMA_DB",
-                            "description": "A name for the vector store connection"
-                        },
-                        {
-                            "name": "url",
-                            "type": "string",
-                            "required": true,
-                            "defaultValue": "http://localhost:8000/",
-                            "description": "The base URL of the ChromaDB server"
-                        },
-                        {
-                            "name": "collection",
-                            "type": "string",
-                            "required": true,
-                            "defaultValue": "WSO2-MI",
-                            "description": "The collection name in the ChromaDB server"
-                        }
-                    ]
-                },
-                {
-                    "name": "POSTGRES_MEMORY",
-                    "description": "POSTGRES Memory Connection Config",
-                    "params": [
-                        {
-                            "name": "connectionName",
-                            "type": "string",
-                            "required": true,
-                            "defaultValue": "POSTGRES_MEMORY",
-                            "description": "A name for the vector store connection"
-                        },
-                        {
-                            "name": "host",
-                            "type": "stringOrExpression",
-                            "required": true,
-                            "defaultValue": "localhost",
-                            "description": "The host name of the database server"
-                        },
-                        {
-                            "name": "port",
-                            "type": "stringOrExpression",
-                            "required": true,
-                            "defaultValue": "5432",
-                            "description": "The port number of the database server"
-                        },
-                        {
-                            "name": "database",
-                            "type": "stringOrExpression",
-                            "required": true,
-                            "defaultValue": "postgres",
-                            "description": "The name of the database"
-                        },
-                        {
-                            "name": "user",
-                            "type": "stringOrExpression",
-                            "required": true,
-                            "defaultValue": "",
-                            "description": "The user name to connect to the database"
-                        },
-                        {
-                            "name": "password",
-                            "type": "stringOrExpression",
-                            "required": false,
-                            "defaultValue": "",
-                            "description": "The password to connect to the database"
-                        },
-                        {
-                            "name": "table",
-                            "type": "stringOrExpression",
-                            "required": true,
-                            "defaultValue": "mi",
-                            "description": "The table name"
-                        }
-                    ]
-                },
-                {
-                    "name": "MILVUS",
-                    "description": "Milvus Connection Config",
-                    "params": [
-                        {
-                            "name": "connectionName",
-                            "type": "string",
-                            "required": true,
-                            "defaultValue": "MILVUS",
-                            "description": "A name for the vector store connection"
-                        },
-                        {
-                            "name": "url",
-                            "type": "stringOrExpression",
-                            "required": true,
-                            "defaultValue": "http://localhost:19530",
-                            "description": "The URI of the Milvus instance (e.g. 'http://localhost:19530' for self-hosted, or 'https://xxx.api.gcp-us-west1.zillizcloud.com' for Zilliz Cloud)"
-                        },
-                        {
-                            "name": "apiKey",
-                            "type": "stringOrExpression",
-                            "required": false,
-                            "defaultValue": "",
-                            "description": "The token or API key for authentication (required for Zilliz Cloud, optional for self-hosted)"
-                        },
-                        {
-                            "name": "collection",
-                            "type": "stringOrExpression",
-                            "required": true,
-                            "defaultValue": "default",
-                            "description": "The name of the Milvus collection. If it does not exist, it will be created automatically."
-                        },
-                        {
-                            "name": "dimension",
-                            "type": "stringOrExpression",
-                            "required": true,
-                            "defaultValue": "1536",
-                            "description": "The dimension of the embedding vectors (e.g. 384 for all-MiniLM-L6-v2, 1536 for OpenAI text-embedding-ada-002)"
-                        }
-                    ]
-                },
-                {
-                    "name": "DEEPSEEK",
-                    "description": "DEEPSEEK Connection Config",
-                    "params": [
-                        {
-                            "name": "connectionName",
-                            "type": "string",
-                            "required": true,
-                            "defaultValue": "DEEPSEEK_CONNECTION",
-                            "description": "The name for the DEEPSEEK connection"
-                        },
-                        {
-                            "name": "apiKey",
-                            "type": "stringOrExpression",
-                            "required": true,
-                            "defaultValue": "",
-                            "description": "Deepseek API Key"
-                        },
-                        {
-                            "name": "baseUrl",
-                            "type": "stringOrExpression",
-                            "required": false,
-                            "defaultValue": "https://api.deepseek.com",
-                            "description": "Base Url"
-                        }
-                    ]
-                },
-                {
-                    "name": "ANTHROPIC",
-                    "description": "Anthropic Connection Config",
-                    "params": [
-                        {
-                            "name": "connectionName",
-                            "type": "string",
-                            "required": true,
-                            "defaultValue": "ANTHROPIC_CONNECTION",
-                            "description": "The name for the Anthropic connection"
-                        },
-                        {
-                            "name": "apiKey",
-                            "type": "stringOrExpression",
-                            "required": true,
-                            "defaultValue": "",
-                            "description": "Anthropic Key"
-                        }
-                    ]
-                },
-                {
-                    "name": "AZURE_OPEN_AI",
-                    "description": "Azure OpenAI Connection Config",
-                    "params": [
-                        {
-                            "name": "connectionName",
-                            "type": "string",
-                            "required": true,
-                            "defaultValue": "AZURE_OPEN_AI_CONNECTION",
-                            "description": "The name for the Azure OpenAI connection"
-                        },
-                        {
-                            "name": "apiKey",
-                            "type": "stringOrExpression",
-                            "required": true,
-                            "defaultValue": "",
-                            "description": "Azure OpenAI Key"
-                        },
-                        {
-                            "name": "deploymentName",
-                            "type": "stringOrExpression",
-                            "required": true,
-                            "defaultValue": "",
-                            "description": "Azure deployment name"
-                        },
-                        {
-                            "name": "endpoint",
-                            "type": "stringOrExpression",
-                            "required": true,
-                            "defaultValue": "",
-                            "description": "Azure endpoint"
-                        }
-                    ]
-                },
                 {
                     "name": "FILE_MEMORY",
                     "description": "File-Based Memory Store Configuration",
@@ -1045,6 +690,162 @@
                     ]
                 },
                 {
+                    "name": "MILVUS",
+                    "description": "Milvus Connection Config",
+                    "params": [
+                        {
+                            "name": "connectionName",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "MILVUS",
+                            "description": "A name for the vector store connection"
+                        },
+                        {
+                            "name": "url",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "http://localhost:19530",
+                            "description": "The URI of the Milvus instance (e.g. 'http://localhost:19530' for self-hosted, or 'https://xxx.api.gcp-us-west1.zillizcloud.com' for Zilliz Cloud)"
+                        },
+                        {
+                            "name": "apiKey",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The token or API key for authentication (required for Zilliz Cloud, optional for self-hosted)"
+                        },
+                        {
+                            "name": "collection",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "default",
+                            "description": "The name of the Milvus collection. If it does not exist, it will be created automatically."
+                        },
+                        {
+                            "name": "dimension",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "1536",
+                            "description": "The dimension of the embedding vectors (e.g. 384 for all-MiniLM-L6-v2, 1536 for OpenAI text-embedding-ada-002)"
+                        }
+                    ]
+                },
+                {
+                    "name": "POSTGRES_MEMORY",
+                    "description": "POSTGRES Memory Connection Config",
+                    "params": [
+                        {
+                            "name": "connectionName",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "POSTGRES_MEMORY",
+                            "description": "A name for the vector store connection"
+                        },
+                        {
+                            "name": "host",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "localhost",
+                            "description": "The host name of the database server"
+                        },
+                        {
+                            "name": "port",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "5432",
+                            "description": "The port number of the database server"
+                        },
+                        {
+                            "name": "database",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "postgres",
+                            "description": "The name of the database"
+                        },
+                        {
+                            "name": "user",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The user name to connect to the database"
+                        },
+                        {
+                            "name": "password",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The password to connect to the database"
+                        },
+                        {
+                            "name": "table",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "mi",
+                            "description": "The table name"
+                        }
+                    ]
+                },
+                {
+                    "name": "DEEPSEEK",
+                    "description": "DEEPSEEK Connection Config",
+                    "params": [
+                        {
+                            "name": "connectionName",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "DEEPSEEK_CONNECTION",
+                            "description": "The name for the DEEPSEEK connection"
+                        },
+                        {
+                            "name": "apiKey",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Deepseek API Key"
+                        },
+                        {
+                            "name": "baseUrl",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "https://api.deepseek.com",
+                            "description": "Base Url"
+                        }
+                    ]
+                },
+                {
+                    "name": "ANTHROPIC",
+                    "description": "Anthropic Connection Config",
+                    "params": [
+                        {
+                            "name": "connectionName",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "ANTHROPIC_CONNECTION",
+                            "description": "The name for the Anthropic connection"
+                        },
+                        {
+                            "name": "apiKey",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Anthropic Key"
+                        }
+                    ]
+                },
+                {
+                    "name": "MI_VECTOR_STORE",
+                    "description": "MI Registry Vector Store",
+                    "params": [
+                        {
+                            "name": "connectionName",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "MI_VECTOR_STORE_1",
+                            "description": "A name for the vector store connection"
+                        }
+                    ]
+                },
+                {
                     "name": "OPEN_AI",
                     "description": "OpenAI Connection Config",
                     "params": [
@@ -1072,15 +873,91 @@
                     ]
                 },
                 {
-                    "name": "MI_VECTOR_STORE",
-                    "description": "MI Registry Vector Store",
+                    "name": "POSTGRES_VECTOR",
+                    "description": "PGVector Connection Config",
                     "params": [
                         {
                             "name": "connectionName",
                             "type": "string",
                             "required": true,
-                            "defaultValue": "MI_VECTOR_STORE_1",
+                            "defaultValue": "POSTGRES_VECTOR",
                             "description": "A name for the vector store connection"
+                        },
+                        {
+                            "name": "host",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "localhost",
+                            "description": "The host name of the database server"
+                        },
+                        {
+                            "name": "port",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "5432",
+                            "description": "The port number of the database server"
+                        },
+                        {
+                            "name": "database",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "postgres",
+                            "description": "The name of the database"
+                        },
+                        {
+                            "name": "user",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The user name to connect to the database"
+                        },
+                        {
+                            "name": "password",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The password to connect to the database"
+                        },
+                        {
+                            "name": "table",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "mi",
+                            "description": "The table name"
+                        },
+                        {
+                            "name": "dimension",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "1536",
+                            "description": "Give the dimension of the embeddings"
+                        }
+                    ]
+                },
+                {
+                    "name": "CHROMA_DB",
+                    "description": "ChromaDB Connection Config",
+                    "params": [
+                        {
+                            "name": "connectionName",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "CHROMA_DB",
+                            "description": "A name for the vector store connection"
+                        },
+                        {
+                            "name": "url",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "http://localhost:8000/",
+                            "description": "The base URL of the ChromaDB server"
+                        },
+                        {
+                            "name": "collection",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "WSO2-MI",
+                            "description": "The collection name in the ChromaDB server"
                         }
                     ]
                 },
@@ -1136,6 +1013,156 @@
                             "required": true,
                             "defaultValue": "1536",
                             "description": "Give the dimension of the embeddings"
+                        }
+                    ]
+                },
+                {
+                    "name": "WSO2_AI",
+                    "description": "WSO2 Default Model Provider Connection Config",
+                    "params": [
+                        {
+                            "name": "connectionName",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "WSO2_AI_CONNECTION",
+                            "description": "The name for the WSO2 AI connection"
+                        },
+                        {
+                            "name": "accessToken",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "${configs.WSO2_AI_ACCESS_TOKEN}",
+                            "description": "WSO2 AI Access Token"
+                        },
+                        {
+                            "name": "serviceUrl",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "${configs.WSO2_AI_SERVICE_URL}",
+                            "description": "WSO2 AI Service Url"
+                        }
+                    ]
+                },
+                {
+                    "name": "MCP",
+                    "description": "MCP Server Connection Config",
+                    "params": [
+                        {
+                            "name": "connectionName",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "MCP_CONNECTION",
+                            "description": "A unique name for the MCP server connection"
+                        },
+                        {
+                            "name": "mcpServerUrl",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "The URL of the MCP server endpoint (e.g., https://api.example.com/mcp/)"
+                        },
+                        {
+                            "name": "authenticationType",
+                            "type": "combo",
+                            "required": true,
+                            "defaultValue": "None",
+                            "description": "Select the authentication method for the MCP server Supported values: None, Bearer Token"
+                        },
+                        {
+                            "name": "bearerToken",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "The bearer token for authentication (e.g., your API key or access token)"
+                        },
+                        {
+                            "name": "customHeaders",
+                            "type": "expressionTextArea",
+                            "required": false,
+                            "defaultValue": "",
+                            "description": "Additional HTTP headers in key:value format (one per line). Example:\nContent-Type:application/json\nX-Custom-Header:value"
+                        },
+                        {
+                            "name": "timeout",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "30000",
+                            "description": "Connection timeout in milliseconds"
+                        },
+                        {
+                            "name": "maxConnections",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "10",
+                            "description": "Maximum number of concurrent connections to the MCP server"
+                        },
+                        {
+                            "name": "connectionTimeout",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "5000",
+                            "description": "Connection establishment timeout in milliseconds"
+                        },
+                        {
+                            "name": "socketTimeout",
+                            "type": "stringOrExpression",
+                            "required": false,
+                            "defaultValue": "30000",
+                            "description": "Socket read/write timeout in milliseconds"
+                        }
+                    ]
+                },
+                {
+                    "name": "MISTRAL_AI",
+                    "description": "MistralAI Connection Config",
+                    "params": [
+                        {
+                            "name": "connectionName",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "MISTRAL_AI_CONNECTION_1",
+                            "description": "The name for the MistralAI connection"
+                        },
+                        {
+                            "name": "apiKey",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "MistralAI Key"
+                        }
+                    ]
+                },
+                {
+                    "name": "AZURE_OPEN_AI",
+                    "description": "Azure OpenAI Connection Config",
+                    "params": [
+                        {
+                            "name": "connectionName",
+                            "type": "string",
+                            "required": true,
+                            "defaultValue": "AZURE_OPEN_AI_CONNECTION",
+                            "description": "The name for the Azure OpenAI connection"
+                        },
+                        {
+                            "name": "apiKey",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Azure OpenAI Key"
+                        },
+                        {
+                            "name": "deploymentName",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Azure deployment name"
+                        },
+                        {
+                            "name": "endpoint",
+                            "type": "stringOrExpression",
+                            "required": true,
+                            "defaultValue": "",
+                            "description": "Azure endpoint"
                         }
                     ]
                 }
